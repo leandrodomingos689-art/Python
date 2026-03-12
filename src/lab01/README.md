@@ -1,0 +1,1 @@
+![imagem](../../img/lab01/result.png)
