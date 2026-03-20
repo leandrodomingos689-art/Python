@@ -1,16 +1,34 @@
+import sys
+import os
+
+# Adiciona o caminho para importar da pasta lib
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+"""
+Classe Athlete com validações separadas no módulo validation.
+"""
+
+from lib.Validation import *
+
+
 class Athlete:
-    """Classe que representa um atleta.""" #Класс, представляющий спортсмена
+    """Representa um atleta com encapsulamento e validações."""
     
-    total_athletes = 0  # Atributo de classe # Атрибут класса
+    # Atributo de classe
+    total_athletes = 0
     
     def __init__(self, name, age, sport, weight, height):
-        """Construtor com validações separadas.""" #Конструктор с отдельными проверками
-        self._validate_name(name)
-        self._validate_age(age)
-        self._validate_sport(sport)
-        self._validate_weight(weight)
-        self._validate_height(height)
+        """
+        Construtor com validações usando funções externas.
+        """
+        # VALIDAÇÕES USANDO FUNÇÕES SEPARADAS
+        validate_name(name)
+        validate_age(age)
+        validate_sport(sport)
+        validate_weight(weight)
+        validate_height(height)
         
+        # Atributos privados
         self._name = name.strip()
         self._age = age
         self._sport = sport.strip()
@@ -18,98 +36,100 @@ class Athlete:
         self._height = float(height)
         self._rating = 1000
         self._active = True
+        
+        # Incrementa contador
         Athlete.total_athletes += 1
     
-    # ===== MÉTODOS DE VALIDAÇÃO SEPARADOS (NÍVEL 5) ===== ОТДЕЛЬНЫЕ МЕТОДЫ ПРОВЕРКИ (УРОВЕНЬ 5)=========
-    def _validate_name(self, name):
-        if not isinstance(name, str) or len(name.strip()) < 2:
-            raise ValueError("Nome inválido") #(Неверное имя)
-    
-    def _validate_age(self, age):
-        if not isinstance(age, int) or age < 12 or age > 100:
-            raise ValueError("Idade inválida") #(Недействительный возраст)
-    
-    def _validate_sport(self, sport):
-        if not isinstance(sport, str) or len(sport.strip()) == 0:
-            raise ValueError("Esporte inválido") #(Инвалидный спорт)
-    
-    def _validate_weight(self, weight):
-        if not isinstance(weight, (int, float)) or weight < 20 or weight > 300:
-            raise ValueError("Peso inválido") #(Неверный вес)
-    
-    def _validate_height(self, height):
-        if not isinstance(height, (int, float)) or height < 100 or height > 250:
-            raise ValueError("Altura inválida") #(Недопустимая высота)
-    
-    # ===== PROPRIEDADES ===== СВОЙСТВО =======
+    # Propriedades (getters)
     @property
-    def name(self): return self._name
+    def name(self):
+        return self._name
     
     @property
-    def age(self): return self._age
+    def age(self):
+        return self._age
     
     @property
-    def sport(self): return self._sport
+    def sport(self):
+        return self._sport
     
     @property
-    def weight(self): return self._weight
+    def weight(self):
+        return self._weight
     
     @property
-    def height(self): return self._height
+    def height(self):
+        return self._height
     
     @property
-    def rating(self): return self._rating
-    
-    @property
-    def active(self): return self._active
+    def rating(self):
+        return self._rating
     
     @property
     def imc(self):
-        h = self._height / 100
-        return round(self._weight / (h * h), 2)
+        """Índice de Massa Corporal (calculado)."""
+        altura_m = self._height / 100
+        return round(self._weight / (altura_m ** 2), 2)
     
-    # ===== SETTER COM VALIDAÇÃO ==//== СЕТТЕР С ПРОВЕРКОЙ =====
+    # Setter com validação
     @weight.setter
     def weight(self, new_weight):
-        self._validate_weight(new_weight)  # Reusa método
+        """Setter com validação usando função externa."""
+        validate_weight(new_weight)
+        
+        old_weight = self._weight
         self._weight = float(new_weight)
-        print(f"Peso atualizado: {self._weight}kg")
+        print(f"Peso atualizado: {old_weight}kg -> {self._weight}kg")
     
-    # ===== MÉTODOS DE ESTADO ==//== МЕТОДЫ СОСТОЯНИЯ ====
-    def ativar(self):
-        self._active = True
-        print("Atleta ativado") #Активированный спортсмен
-    
-    def desativar(self):
-        self._active = False
-        print("Atleta desativado") #Инвалид спортсмен
-    
-    # ===== MÉTODOS DE NEGÓCIO ==//==МЕТОДЫ БИЗНЕСА =====
-    def treinar(self, mins):
-        """Comportamento DEPENDE do estado (NÍVEL 5).""" #Поведение зависит от состояния (Уровень 5)
+    # Métodos de negócio
+    def treinar(self, minutos):
+        """Registra um treino."""
         if not self._active:
-            raise Exception("Atleta inativo não pode treinar") #Неактивный спортсмен не может тренироваться
-        self._rating += mins // 10
-        print(f"Treino de {mins}min! Rating: {self._rating}")
+            raise Exception(" Atleta inativo não pode treinar")
+        pontos = minutos // 10
+        self._rating += pontos
+        print (f"Treino de {minutos}min! Rating +{pontos}")
+        return
     
     def competir(self, venceu):
-        """Comportamento DEPENDE do estado .""" #Поведение зависит от состояния 
-        if not self._active:
-            raise Exception("Atleta inativo não pode competir") #Неактивный спортсмен не может соревноваться
-        self._rating += 50 if venceu else -20
-        if self._rating < 0: self._rating = 0
-        print(f"{'Vitória' if venceu else 'Derrota'}! Rating: {self._rating}")
+        """Registra uma competição."""
+        if venceu:
+            self._rating += 50
+            print (" Vitória! Rating +50")
+        else:
+            self._rating -= 20
+            if self._rating < 0:
+                self._rating = 0
+            print (" Derrota... Rating -20")
+        return
     
-    # ===== MÉTODOS MÁGICOS ==//==МАГИЧЕСКИЕ МЕТОДЫ ====
+    # Métodos de estado
+    def ativar(self):
+        """Ativa o atleta."""
+        self._active = True
+        print(" Atleta ativado")
+    
+    def desativar(self):
+        """Desativa o atleta."""
+        self._active = False
+        print("Atleta desativado")
+    
+    # Métodos mágicos
     def __str__(self):
+        """Representação amigável."""
         status = "Ativo" if self._active else "Inativo"
-        return f"{self._name} | {self._sport} | {self._age}anos | {self._weight}kg | Rating:{self._rating} | {status}"
+        return (f"Athlete: {self._name} | {self._sport} | "
+                f"{self._age} anos | {self._weight}kg | "
+                f"IMC: {self.imc} | Rating: {self._rating} | {status}")
     
     def __repr__(self):
-        return f"Athlete('{self._name}', {self._age}, '{self._sport}', {self._weight}, {self._height})"
+        """Representação técnica."""
+        return (f"Athlete('{self._name}', {self._age}, "
+                f"'{self._sport}', {self._weight}, {self._height})")
     
     def __eq__(self, other):
-        return isinstance(other, Athlete) and self._name == other._name and self._sport == other._sport
+        """Comparação por nome e esporte."""
+        if not isinstance(other, Athlete):
+            return False
+        return self._name == other._name and self._sport == other._sport
     
-    def __del__(self):
-        Athlete.total_athletes -= 1
