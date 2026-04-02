@@ -8,7 +8,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 Classe Athlete com validações separadas no módulo validation.
 """
 
-from lib.Validation import *
+from lib.validation import *
 
 
 class Athlete:
@@ -124,7 +124,7 @@ class Athlete:
     
     def __repr__(self):
         """Representação técnica."""
-        return (f"Athlete('{self._name}', {self._age}, "
+        return (f"Athlete: ('_name: {self._name}', _age: {self._age}, "
                 f"'{self._sport}', {self._weight}, {self._height})")
     
     def __eq__(self, other):
@@ -132,4 +132,3 @@ class Athlete:
         if not isinstance(other, Athlete):
             return False
         return self._name == other._name and self._sport == other._sport
-    
