@@ -41,4 +41,8 @@
  
  Добавлены спортсмены:
 
-![imagem](../../img/lab03/Atletas%20adicio....png) 
+![imagem](../../img/lab03/cena01.png) 
+фильтрация по типу:
+![imagem](../../img/lab03/cena02.png) 
+Деловые методы и перезапись:
+![imagem](../../img/lab03/cena03.png) 
