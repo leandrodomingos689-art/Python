@@ -40,6 +40,9 @@ def main():
     process_gym_session(team.get_all())
 
     # --- CENÁRIO 2: Filtragem por Interface (Requisito Nota 5) ---
+    # interface just a contract(what to do) no implementation code
+    #ABC A Partial blueprint(what to do + how to do it).
+
     print("\n--- 🔹 CENÁRIO 2: Sistema de Relatórios (Filtro IReportable) ---")
     # Usando o novo método que adicionamos na AthleteCollection
     reportables = team.get_by_interface(IReportable)

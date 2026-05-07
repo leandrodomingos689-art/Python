@@ -11,3 +11,6 @@ class IReportable(ABC):
     @abstractmethod
     def get_summary(self) -> str:
         pass
+    #ATRAVES DO POLIMORFISMO  E DE COLEÇÕES
+# create a list with instances of both classes
+# A Single loop triggers the behavior of both
