@@ -35,7 +35,10 @@ class TrainingBonusStrategy:
     def __init__(self, bonus_multiplier):
         self.multiplier = bonus_multiplier
 
-    def __call__(self, athlete):
+    def __call__(self, athlete): #Callable Objects (__call__): Objects that can be invoked like functions
         bonus = int(athlete.rating * self.multiplier)
         athlete._rating += bonus # Acesso direto para fins acadêmicos
         return athlete
+
+a = TrainingBonusStrategy()
+

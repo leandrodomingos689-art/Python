@@ -32,11 +32,11 @@ def main():
     rating_filter = st.make_rating_filter(1000)
     
     result = (team
-              .filter_by(st.is_professional)
-              .filter_by(rating_filter)
-              .sort_by(st.sort_by_rating))
+              .filter_by(st.is_professional) #Filter: Creates a new collection with only the items that pass a test
+              .filter_by(rating_filter) #sort(): Modifies the original list directly (in-place).
+              .sort_by(st.sort_by_rating)) #sorted(): Creates a new sorted list, keeping the original unchanged
     
-    # SAÍDA: Usando MAP para extrair apenas os nomes (Nota 4)
+    # SAÍDA: Usando MAP para extrair apenas os nomes (Nota 4) #"I used Map to transform my objects into simple strings (names)
     nomes_pro = list(map(lambda x: x.name, result.get_all()))
     print(f" -> Resultados Filtrados: {nomes_pro}")
 
@@ -47,11 +47,11 @@ def main():
     team.sort_by(st.sort_by_name)
     print(f" -> Ordenado por Nome: {[a.name for a in team]}")
     
-    # Estratégia B: Por Idade (usando Lambda - Nota 4)
+    # Estratégia B: Por Idade (usando Lambda - Nota 4)##Lambdas: One-line anonymous functions for quick tasks.
     team.sort_by(lambda x: x.age)
     print(f" -> Ordenado por Idade: {[(a.name, a.age) for a in team]}")
 
-    # --- CENÁRIO 3: CALLABLE OBJECT STRATEGY (Nota 5) ---
+    # --- CENÁRIO 3: CALLABLE OBJECT STRATEGY ##Callable Objects (__call__): Objects that can be invoked like functions.
     print("\n🔹 CENÁRIO 3: Aplicação de Bónus via Callable Object")
     bonus_10_percent = st.TrainingBonusStrategy(0.10)
     

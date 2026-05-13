@@ -4,3 +4,4 @@
 # *[LAB03](./src/lab03/)*
 # *[LAB04](./src/lab04/)*
 # *[LAB05](./src/lab05/)*
+# *[LAB06](./src/lab06/)*
